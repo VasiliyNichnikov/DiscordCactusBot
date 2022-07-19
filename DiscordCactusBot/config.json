@@ -1,0 +1,14 @@
+﻿{
+  "Messages": {
+    "Errors": {
+      "UnknownCommand": "Упс! Команда не определена. Введите **!help**, чтобы посмотреть все команды",
+      "ParseFailed": "Упс! Команда не пронализированна!",
+      "BadArgCount": "Упс! Вы передали не верные аргументы!",
+      "ObjectNotFound": "Упс! Что-то пошло не так (ObjectNotFound)",
+      "MultipleMatches": "Упс! Что-то пошло не так (MultipleMatches)",
+      "UnmetPrecondition": "Упс! Что-то пошло не так (UnmetPrecondition)",
+      "Exception": "Упс! Во время выполнения команды что-то пошло не так(",
+      "Unsuccessful": "Упс! Команда завершилась не верно ("
+    }
+  }
+}

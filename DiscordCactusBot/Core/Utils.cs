@@ -23,7 +23,18 @@ public static class Utils
             throw new Exception(); // todo добавить фильтр ошибке
         return discordToken;
     }
-
+    
+    /// <summary>
+    /// Возвращает путь до конфига json
+    /// </summary>
+    /// <returns></returns>
+    public static string GetRootConfig()
+    {
+        var rootProject = GetRootProject();
+        var combinePath = Path.Combine(rootProject, "config.json");
+        return combinePath;
+    }
+    
     public static string GetRootMusic(string nameMusic)
     {
         var rootProject = GetRootProject();

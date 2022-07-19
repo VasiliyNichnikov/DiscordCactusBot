@@ -2,6 +2,7 @@
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using DiscordCactusBot.Core;
 using IResult = Discord.Commands.IResult;
 
 namespace DiscordCactusBot.Commands;
@@ -56,32 +57,33 @@ public class CommandHandler
         // Проверка ошибок
         if (string.IsNullOrEmpty(result.ErrorReason) == false)
         {
+            var config = Config.GetInstance().Deserialize.Messages!.Errors;
             var textError = "";
             switch (result.Error)
             {
                 case CommandError.UnknownCommand:
-                    textError = "Упс! Команда не определена. Введите **!help**, чтобы посмотреть все команды";
+                    textError = config?.UnknownCommand;
                     break;
                 case CommandError.ParseFailed:
-                    textError = "Упс! Команда не пронализированна!";
+                    textError = config?.ParseFailed;
                     break;
                 case CommandError.BadArgCount:
-                    textError = "Упс! Вы передали не верные аргументы!";
+                    textError = config?.BadArgCount;
                     break;
                 case CommandError.ObjectNotFound:
-                    textError = "Упс! Что-то пошло не так (ObjectNotFound)";
+                    textError = config?.ObjectNotFound;
                     break;
                 case CommandError.MultipleMatches:
-                    textError = "Упс! Что-то пошло не так (MultipleMatches)";
+                    textError = config?.MultipleMatches;
                     break;
                 case CommandError.UnmetPrecondition:
-                    textError = "Упс! Что-то пошло не так (UnmetPrecondition)";
+                    textError = config?.UnmetPrecondition;
                     break;
                 case CommandError.Exception:
-                    textError = "Упс! Во время выполнения команды что-то пошло не так(";
+                    textError = config?.Exception;
                     break;
                 case CommandError.Unsuccessful:
-                    textError = "Упс! Команда завершилась не верно (";
+                    textError = config?.Unsuccessful;
                     break;
                 case null:
                     break;
