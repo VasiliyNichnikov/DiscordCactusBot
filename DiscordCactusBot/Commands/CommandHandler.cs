@@ -53,8 +53,8 @@ public class CommandHandler
     // todo вынести в отдельный класс
     private async Task ComponentCommandExecuted(Optional<CommandInfo> command, ICommandContext context, IResult result)
     {
-        // todo нужно вынести все данные в config
         // Проверка ошибок
+        // todo Нужно попытаться избавитсья от switch
         if (string.IsNullOrEmpty(result.ErrorReason) == false)
         {
             var config = Config.GetInstance().Deserialize.Messages!.Errors;
