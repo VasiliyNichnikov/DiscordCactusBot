@@ -1,14 +1,13 @@
-﻿namespace DiscordCactusBot.Core;
+﻿using System.Text;
 
+namespace DiscordCactusBot.Core;
+
+// todo вынести все работы с .env в отдельный класс
 public static class Utils
 {
-    /// <summary>
-    /// Загрузка env для работы со скрытыми данными
-    /// </summary>
-    public static void LoadEnv()
+    static Utils()
     {
-        var rootProject = GetRootProject();
-        DotNetEnv.Env.Load(Path.Combine(rootProject, ".env"));
+        LoadEnv();
     }
     
     /// <summary>
@@ -18,9 +17,7 @@ public static class Utils
     /// <exception cref="Exception"></exception>
     public static string GetDiscordToken()
     {
-        var discordToken = Environment.GetEnvironmentVariable("DISCORD-TOKEN");
-        if (discordToken is null)
-            throw new Exception(); // todo добавить фильтр ошибке
+        var discordToken = GetValueFromEnvByKey("DISCORD-TOKEN");
         return discordToken;
     }
     
@@ -34,6 +31,21 @@ public static class Utils
         var combinePath = Path.Combine(rootProject, "config.json");
         return combinePath;
     }
+
+    /// <summary>
+    /// Возвращает информацию для подключения к базе данных 
+    /// </summary>
+    /// <returns></returns>
+    public static string GetInfoForConnectToDatabase()
+    {
+        var host = GetValueFromEnvByKey("DATABASE-HOST");
+        var user = GetValueFromEnvByKey("DATABASE-USER");
+        var name = GetValueFromEnvByKey("DATABASE-NAME");
+        var port = GetValueFromEnvByKey("DATABASE-PORT");
+        var password = GetValueFromEnvByKey("DATABASE-PASSWORD");
+        
+        return $"Host={host};Port={port};Database={name};Username={user};Password={password}";
+    }
     
     public static string GetRootMusic(string nameMusic)
     {
@@ -41,10 +53,27 @@ public static class Utils
         var combinedPath = Path.Combine(rootProject, @$"static\music\{nameMusic}.mp3");
         return combinedPath;
     }
+
+    private static string GetValueFromEnvByKey(string key)
+    {
+        var value = Environment.GetEnvironmentVariable(key);
+        if (value is null)
+            throw new Exception(); // todo добавить фильтр ошибке
+        return value;
+    }
+    
+    /// <summary>
+    /// Загрузка env для работы со скрытыми данными
+    /// </summary>
+    private static void LoadEnv()
+    {
+        var rootProject = GetRootProject();
+        
+        DotNetEnv.Env.Load(Path.Combine(rootProject, ".env"));
+    }
     
     private static string GetRootProject()
     {
-        var path = Directory.GetCurrentDirectory();
-        return Directory.GetParent(path).Parent.Parent.FullName;
+        return Directory.GetCurrentDirectory();
     }
 }

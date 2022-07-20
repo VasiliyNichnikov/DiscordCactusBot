@@ -1,24 +1,19 @@
-﻿using DiscordCactusBot.Models;
+﻿using DiscordCactusBot.Core;
+using DiscordCactusBot.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DiscordCactusBot.Database;
 
 public sealed class ApplicationContext: DbContext
 {
-    public DbSet<Channel> Channels { get; set; }
-    private string _nameDB = "DiscordDB";
-
-    public async Task CheckDataBase()
-    {
-        // Проверяет наличие БД и если ее нет, создает
-        await Database.EnsureCreatedAsync();
-    }
+    public DbSet<ChannelModel> Channels { get; set; }
+    public DbSet<SettingsChannelModel> Settings { get; set; }
+    public DbSet<TrackHistoryModel> TrackHistory { get; set; }
+    public DbSet<TrackModel> Tracks { get; set; }
     
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        Console.WriteLine("Application context: OnConfiguring");
-        // optionsBuilder.UseSqlServer("Server=localhost;Database=master;Trusted_Connection=True;");
-        optionsBuilder.UseSqlServer(@$"Server=(localdb)\MSSQLLocalDB;Database={_nameDB};Trusted_Connection=True;");
+        var connectionString = Utils.GetInfoForConnectToDatabase();
+        optionsBuilder.UseNpgsql(connectionString);
     }
 }
